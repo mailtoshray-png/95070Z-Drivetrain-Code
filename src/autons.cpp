@@ -13,10 +13,10 @@ void rightAuton() {
   Controller.Screen.setCursor(3, 1);
   Controller.Screen.print("start auton");
 
-  drive Chassis(3.25, 5.0/3, 24, 0, 0, leftDrive, rightDrive, PORT1);
+  drive Chassis(3.25, 5.0/3, 0, 0, 0, leftDrive, rightDrive, PORT1);
   intake Intake(intakeMotors);
 
-  Chassis.driveDistance(48, 0.35, 6.05, 0.05, 0.2);
+  Chassis.driveDistance(24, 0.35, 6.05, 0.05, 0.2);
 }
 
 void leftAuton() {
