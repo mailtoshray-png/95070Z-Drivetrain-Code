@@ -16,19 +16,19 @@ using namespace vex;
 
 brain Brain;
 controller Controller(controllerType::primary);
-motor LB(PORT6, ratio6_1, true); //Left Back Motor(from brain perspective)
-motor LM(PORT5, ratio6_1, true); //Left Middle Motor(from brain perspective)
-motor LF(PORT4, ratio6_1, true); //Left Front Motor(from brain perspective)
-motor RB(PORT1, ratio6_1, false); //Right Back Motor(from brain perspective)
-motor RM(PORT2, ratio6_1, false); //Right Middle Motor(from brain perspective)
-motor RF(PORT3, ratio6_1, false); //Right Front Motor(from brain perspective)
+motor LB(PORT16, ratio18_1, true); //Left Back Motor(from brain perspective)
+motor LM(PORT17, ratio18_1, true); //Left Middle Motor(from brain perspective)
+motor LF(PORT18, ratio18_1, true); //Left Front Motor(from brain perspective)
+motor RB(PORT15, ratio18_1, false); //Right Back Motor(from brain perspective)
+motor RM(PORT14, ratio18_1, false); //Right Middle Motor(from brain perspective)
+motor RF(PORT13, ratio18_1, false); //Right Front Motor(from brain perspective)
 
 
 motor_group leftDrive(LF, LM, LB);
 motor_group rightDrive(RF, RM, RB);
 
-motor Lift1(PORT10, gearSetting::ratio18_1, true); //Left Lift motor(from brain perspective)
-motor Lift2(PORT11, gearSetting::ratio18_1, false); //Right Lift motor(from brain perspective)
+motor Lift1(PORT10, gearSetting::ratio36_1, true); //Left Lift motor(from brain perspective)
+motor Lift2(PORT11, gearSetting::ratio36_1, false); //Right Lift motor(from brain perspective)
 
 digital_out DoubleActingPiston(Brain.ThreeWirePort.A);
 digital_out SingleActingPiston(Brain.ThreeWirePort.B);
