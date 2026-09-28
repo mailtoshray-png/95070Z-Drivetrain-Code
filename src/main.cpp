@@ -109,82 +109,24 @@ bool buttonXHeld = false;
 // User control function
 void usercontrol(void) {
 
-  // bool slowModeActive = false;
-  Controller.Screen.clearLine(1);
-  Controller.Screen.setCursor(1, 1);
-  // Controller.Screen.print("Drive check A");
-  Controller.Screen.print("CHECK B: driving");
-  // Brain.Screen.clearScreen();
-  // Brain.Screen.printAt(10, 25, "Drive check A | intake port 6");
-  Brain.Screen.clearScreen(black);
-  Brain.Screen.setPenColor(white);
-  Brain.Screen.setFillColor(black);
-  Brain.Screen.printAt(10, 25, "CHECK B: driver loop | intake port 6");
-  int displayTicks = 0;
   while (true) {
 
     // ========== DRIVE CONTROL ========== //
   double verticalPower = Controller.Axis3.position();// Controls movement forwards-backwards.
   double horizontalPower = Controller.Axis1.position();// Controls movements turning left-right.
 
-  // 0.9 and 0.7 are to slow down the drivetrain.
-  double right = (verticalPower * 0.9) - (horizontalPower * 0.7);
-  double left = (verticalPower * 0.9) + (horizontalPower * 0.7);
+  // 0.7 is to slow down the drivetrain.
+  double right = ((verticalPower) - (horizontalPower)) * 0.7;
+  double left = ((verticalPower) + (horizontalPower)) * 0.7;
 
   if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { //10 is for the dead zone
     leftDrive.stop(coast);
     rightDrive.stop(coast);
-  } else {
+  }
+  else {
     leftDrive.spin(forward, left, percent);
     rightDrive.spin(forward, right, percent);
   }
-
-    // Previous control mapping, retained for reference:
-    //     // ========== Lift CONTROL ========== //
-    //     // Hold down the R1 and R2 buttons to use the lift //
-    //     if (Controller.ButtonR1.pressing()) {
-    //       Lift1.spin(forward, 75, percent);
-    //       Lift2.spin(forward, 75, percent);
-    //     }
-    //     else if (Controller.ButtonR2.pressing()) {
-    //       Lift1.spin(reverse, 75, percent);
-    //       Lift2.spin(reverse, 75, percent);
-    //     } 
-    //     else {
-    //       Lift1.stop(hold);
-    //       Lift2.stop(hold);
-    //     }
-    // 
-    //     // ========== INTAKE ========== //
-    //     // Tap the L1 and L2 buttons to set the intake speed. Tap the same button again to stop //
-    //     if (Controller.ButtonL1.pressing() && intakeSpeed != 100 && !buttonL1Held) {
-    //       intakeMotor.spin(forward, 100, percent);
-    //       intakeSpeed = 100;
-    //       buttonL1Held = true;
-    //     } 
-    //     else if(Controller.ButtonL1.pressing() && intakeSpeed == 100 && !buttonL1Held) {
-    //       intakeMotor.stop(coast);
-    //       intakeSpeed = 0;
-    //       buttonL1Held = true;
-    //     }
-    //     else if (Controller.ButtonL2.pressing() && intakeSpeed != -100 && !buttonL2Held) {
-    //       intakeMotor.spin(reverse, 100, percent);
-    //       intakeSpeed = -100;
-    //       buttonL2Held = true;
-    //     } 
-    //     else if (Controller.ButtonL2.pressing() && intakeSpeed == -100 && !buttonL2Held){
-    //       intakeMotor.stop(coast);
-    //       intakeSpeed = 0;
-    //       buttonL2Held = true;
-    //     }
-    // 
-    //     if(!Controller.ButtonL1.pressing()) {
-    //       buttonL1Held = false;
-    //     }
-    //     if(!Controller.ButtonL2.pressing()) {
-    //       buttonL2Held = false;
-    //     }
-    //  
 
     // ========== Lift CONTROL ========== //
     // Hold down the L1 and L2 buttons to use the lift //
@@ -230,11 +172,11 @@ void usercontrol(void) {
     if(!Controller.ButtonR2.pressing()) {
       buttonR2Held = false;
     }
- 
+
     // ========== COLOR SENSOR ========== //
     color detectedColor = OpticalSensor.color();
 
-    /*if (detectedColor == color::blue) {
+    if (detectedColor == color::blue) {
       Brain.Screen.printAt(50, 50, "Blue Detected!");
     } 
     
@@ -244,31 +186,7 @@ void usercontrol(void) {
 
     else {
       Brain.Screen.printAt(50, 50, "No specific color detected.");
-    }*/
-
-    double hue = OpticalSensor.hue();
-    double brightness = OpticalSensor.brightness();
-    // Original sensor display, retained while drive diagnostics are active:
-    // Brain.Screen.printAt(50, 70, "Hue: %.2f", hue);
-    // Brain.Screen.printAt(50, 90, "Brightness: %.2f", brightness);
-    // Previous diagnostics cleared the whole screen every 20 ms, causing flicker.
-    // Brain.Screen.clearScreen();
-    // Brain.Screen.printAt(10, 25, "Drive check A | intake port 6");
-    // Brain.Screen.printAt(10, 50, "Axis3: %.0f  Axis1: %.0f", verticalPower, horizontalPower);
-    // Brain.Screen.printAt(10, 75, "Left: %.0f  Right: %.0f", left, right);
-    // Brain.Screen.printAt(10, 100, "L1: %d  L2: %d", Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing());
-    // Brain.Screen.printAt(10, 125, "Hue: %.2f  Brightness: %.2f", hue, brightness);
-
-    // Refresh in place every 3 seconds; fixed-width numbers overwrite old digits.
-    if (displayTicks == 0) {
-      Brain.Screen.printAt(10, 25, "CHECK B: driver loop | intake port 6");
-      Brain.Screen.printAt(10, 50, "Axis3: %4.0f  Axis1: %4.0f", verticalPower, horizontalPower);
-      Brain.Screen.printAt(10, 75, "Left: %4.0f  Right: %4.0f", left, right);
-      Brain.Screen.printAt(10, 100, "L1: %d  L2: %d", Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing());
-      Brain.Screen.printAt(10, 125, "Hue: %6.2f  Brightness: %6.2f", hue, brightness);
     }
-    // displayTicks = (displayTicks + 1) % 5; // Previous 100 ms display refresh.
-    displayTicks = (displayTicks + 1) % 150; // 150 loops x 20 ms = about 3 seconds.
 
     // ========== PNEUMATICS ========== //
     // Use the X button to toggle the piston position //
@@ -283,7 +201,7 @@ void usercontrol(void) {
     // ========== LOOP DELAY ========== //
     wait(20, msec);
   }
-}  
+}
 
 // Entry point
 int main() {
