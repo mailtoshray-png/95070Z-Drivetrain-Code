@@ -39,7 +39,6 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 
-
   vexcodeInit();
   autonSelector selector(1, 3);
   selector.chooseAuton();
@@ -100,15 +99,28 @@ void spinRightDT(double power);
 
 //Variables used in driver control
 double intakeSpeed = 0;
-bool buttonL1Held = false;
-bool buttonL2Held = false;
+// bool buttonL1Held = false;
+// bool buttonL2Held = false;
+bool buttonR1Held = false;
+bool buttonR2Held = false;
 
 bool buttonXHeld = false;
 
 // User control function
 void usercontrol(void) {
 
-  bool slowModeActive = false;
+  // bool slowModeActive = false;
+  Controller.Screen.clearLine(1);
+  Controller.Screen.setCursor(1, 1);
+  // Controller.Screen.print("Drive check A");
+  Controller.Screen.print("CHECK B: driving");
+  // Brain.Screen.clearScreen();
+  // Brain.Screen.printAt(10, 25, "Drive check A | intake port 6");
+  Brain.Screen.clearScreen(black);
+  Brain.Screen.setPenColor(white);
+  Brain.Screen.setFillColor(black);
+  Brain.Screen.printAt(10, 25, "CHECK B: driver loop | intake port 6");
+  int displayTicks = 0;
   while (true) {
 
     // ========== DRIVE CONTROL ========== //
@@ -120,29 +132,67 @@ void usercontrol(void) {
   double left = (verticalPower * 0.9) + (horizontalPower * 0.7);
 
   if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { //10 is for the dead zone
-    LB.stop(coast);
-    LF.stop(coast);
-    LM.stop(coast);
-    RB.stop(coast);
-    RF.stop(coast);
-    RM.stop(coast);
-  }
-  else {
-    LB.spin(forward, left, percent);
-    LF.spin(forward, left, percent);
-    LM.spin(forward, left, percent);
-    RB.spin(forward, right, percent);
-    RF.spin(forward, right, percent);
-    RM.spin(forward, right, percent);
+    leftDrive.stop(coast);
+    rightDrive.stop(coast);
+  } else {
+    leftDrive.spin(forward, left, percent);
+    rightDrive.spin(forward, right, percent);
   }
 
+    // Previous control mapping, retained for reference:
+    //     // ========== Lift CONTROL ========== //
+    //     // Hold down the R1 and R2 buttons to use the lift //
+    //     if (Controller.ButtonR1.pressing()) {
+    //       Lift1.spin(forward, 75, percent);
+    //       Lift2.spin(forward, 75, percent);
+    //     }
+    //     else if (Controller.ButtonR2.pressing()) {
+    //       Lift1.spin(reverse, 75, percent);
+    //       Lift2.spin(reverse, 75, percent);
+    //     } 
+    //     else {
+    //       Lift1.stop(hold);
+    //       Lift2.stop(hold);
+    //     }
+    // 
+    //     // ========== INTAKE ========== //
+    //     // Tap the L1 and L2 buttons to set the intake speed. Tap the same button again to stop //
+    //     if (Controller.ButtonL1.pressing() && intakeSpeed != 100 && !buttonL1Held) {
+    //       intakeMotor.spin(forward, 100, percent);
+    //       intakeSpeed = 100;
+    //       buttonL1Held = true;
+    //     } 
+    //     else if(Controller.ButtonL1.pressing() && intakeSpeed == 100 && !buttonL1Held) {
+    //       intakeMotor.stop(coast);
+    //       intakeSpeed = 0;
+    //       buttonL1Held = true;
+    //     }
+    //     else if (Controller.ButtonL2.pressing() && intakeSpeed != -100 && !buttonL2Held) {
+    //       intakeMotor.spin(reverse, 100, percent);
+    //       intakeSpeed = -100;
+    //       buttonL2Held = true;
+    //     } 
+    //     else if (Controller.ButtonL2.pressing() && intakeSpeed == -100 && !buttonL2Held){
+    //       intakeMotor.stop(coast);
+    //       intakeSpeed = 0;
+    //       buttonL2Held = true;
+    //     }
+    // 
+    //     if(!Controller.ButtonL1.pressing()) {
+    //       buttonL1Held = false;
+    //     }
+    //     if(!Controller.ButtonL2.pressing()) {
+    //       buttonL2Held = false;
+    //     }
+    //  
+
     // ========== Lift CONTROL ========== //
-    // Hold down the R1 and R2 buttons to use the lift //
-    if (Controller.ButtonR1.pressing()) {
+    // Hold down the L1 and L2 buttons to use the lift //
+    if (Controller.ButtonL1.pressing()) {
       Lift1.spin(forward, 75, percent);
       Lift2.spin(forward, 75, percent);
     }
-    else if (Controller.ButtonR2.pressing()) {
+    else if (Controller.ButtonL2.pressing()) {
       Lift1.spin(reverse, 75, percent);
       Lift2.spin(reverse, 75, percent);
     } 
@@ -152,33 +202,33 @@ void usercontrol(void) {
     }
 
     // ========== INTAKE ========== //
-    // Tap the L1 and L2 buttons to set the intake speed. Tap the same button again to stop //
-    if (Controller.ButtonL1.pressing() && intakeSpeed != 100 && !buttonL1Held) {
+    // Tap the R1 and R2 buttons to set the intake speed. Tap the same button again to stop //
+    if (Controller.ButtonR1.pressing() && intakeSpeed != 100 && !buttonR1Held) {
       intakeMotor.spin(forward, 100, percent);
       intakeSpeed = 100;
-      buttonL1Held = true;
+      buttonR1Held = true;
     } 
-    else if(Controller.ButtonL1.pressing() && intakeSpeed == 100 && !buttonL1Held) {
+    else if(Controller.ButtonR1.pressing() && intakeSpeed == 100 && !buttonR1Held) {
       intakeMotor.stop(coast);
       intakeSpeed = 0;
-      buttonL1Held = true;
+      buttonR1Held = true;
     }
-    else if (Controller.ButtonL2.pressing() && intakeSpeed != -100 && !buttonL2Held) {
+    else if (Controller.ButtonR2.pressing() && intakeSpeed != -100 && !buttonR2Held) {
       intakeMotor.spin(reverse, 100, percent);
       intakeSpeed = -100;
-      buttonL2Held = true;
+      buttonR2Held = true;
     } 
-    else if (Controller.ButtonL2.pressing() && intakeSpeed == -100 && !buttonL2Held){
+    else if (Controller.ButtonR2.pressing() && intakeSpeed == -100 && !buttonR2Held){
       intakeMotor.stop(coast);
       intakeSpeed = 0;
-      buttonL2Held = true;
+      buttonR2Held = true;
     }
 
-    if(!Controller.ButtonL1.pressing()) {
-      buttonL1Held = false;
+    if(!Controller.ButtonR1.pressing()) {
+      buttonR1Held = false;
     }
-    if(!Controller.ButtonL2.pressing()) {
-      buttonL2Held = false;
+    if(!Controller.ButtonR2.pressing()) {
+      buttonR2Held = false;
     }
  
     // ========== COLOR SENSOR ========== //
@@ -198,9 +248,27 @@ void usercontrol(void) {
 
     double hue = OpticalSensor.hue();
     double brightness = OpticalSensor.brightness();
-    Brain.Screen.printAt(50, 70, "Hue: %.2f", hue);
-    Brain.Screen.printAt(50, 90, "Brightness: %.2f", brightness);
-    Brain.Screen.clearScreen();
+    // Original sensor display, retained while drive diagnostics are active:
+    // Brain.Screen.printAt(50, 70, "Hue: %.2f", hue);
+    // Brain.Screen.printAt(50, 90, "Brightness: %.2f", brightness);
+    // Previous diagnostics cleared the whole screen every 20 ms, causing flicker.
+    // Brain.Screen.clearScreen();
+    // Brain.Screen.printAt(10, 25, "Drive check A | intake port 6");
+    // Brain.Screen.printAt(10, 50, "Axis3: %.0f  Axis1: %.0f", verticalPower, horizontalPower);
+    // Brain.Screen.printAt(10, 75, "Left: %.0f  Right: %.0f", left, right);
+    // Brain.Screen.printAt(10, 100, "L1: %d  L2: %d", Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing());
+    // Brain.Screen.printAt(10, 125, "Hue: %.2f  Brightness: %.2f", hue, brightness);
+
+    // Refresh in place every 3 seconds; fixed-width numbers overwrite old digits.
+    if (displayTicks == 0) {
+      Brain.Screen.printAt(10, 25, "CHECK B: driver loop | intake port 6");
+      Brain.Screen.printAt(10, 50, "Axis3: %4.0f  Axis1: %4.0f", verticalPower, horizontalPower);
+      Brain.Screen.printAt(10, 75, "Left: %4.0f  Right: %4.0f", left, right);
+      Brain.Screen.printAt(10, 100, "L1: %d  L2: %d", Controller.ButtonL1.pressing(), Controller.ButtonL2.pressing());
+      Brain.Screen.printAt(10, 125, "Hue: %6.2f  Brightness: %6.2f", hue, brightness);
+    }
+    // displayTicks = (displayTicks + 1) % 5; // Previous 100 ms display refresh.
+    displayTicks = (displayTicks + 1) % 150; // 150 loops x 20 ms = about 3 seconds.
 
     // ========== PNEUMATICS ========== //
     // Use the X button to toggle the piston position //
@@ -215,21 +283,18 @@ void usercontrol(void) {
     // ========== LOOP DELAY ========== //
     wait(20, msec);
   }
-}
-
-
-
-  
+}  
 
 // Entry point
 int main() {
+
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
   
   pre_auton();
-  //Competition.test_auton();
-  //Competition.test_driver();
+  Competition.test_auton();
+  Competition.test_driver();
 
 
   while (true) {

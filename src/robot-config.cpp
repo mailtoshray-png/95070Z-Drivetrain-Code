@@ -17,8 +17,8 @@ using namespace vex;
 brain Brain;
 controller Controller(controllerType::primary);
 motor LB(PORT16, ratio18_1, true); //Left Back Motor(from brain perspective)
-motor LM(PORT17, ratio18_1, true); //Left Middle Motor(from brain perspective)
-motor LF(PORT18, ratio18_1, true); //Left Front Motor(from brain perspective)
+motor LM(PORT18, ratio18_1, true); //Left Middle Motor(from brain perspective)
+motor LF(PORT19, ratio18_1, true); //Left Front Motor(from brain perspective)
 motor RB(PORT15, ratio18_1, false); //Right Back Motor(from brain perspective)
 motor RM(PORT14, ratio18_1, false); //Right Middle Motor(from brain perspective)
 motor RF(PORT13, ratio18_1, false); //Right Front Motor(from brain perspective)
@@ -33,11 +33,11 @@ motor Lift2(PORT11, gearSetting::ratio36_1, false); //Right Lift motor(from brai
 digital_out DoubleActingPiston(Brain.ThreeWirePort.A);
 digital_out SingleActingPiston(Brain.ThreeWirePort.B);
 
-motor intakeMotor(PORT14, ratio18_1, false);
-motor middleIntakeMotor(PORT13, ratio18_1, true);
-motor  bottomIntakeMotor(PORT12, ratio18_1, false); 
+motor intakeMotor(PORT6, ratio18_1, false);
+// motor middleIntakeMotor(PORT9, ratio18_1, true);
+// motor  bottomIntakeMotor(PORT12, ratio18_1, false); 
 
-motor_group intakeMotors(intakeMotor, middleIntakeMotor, bottomIntakeMotor);
+motor_group intakeMotors(intakeMotor);
 
 inertial InertialSensor(PORT7);
 
