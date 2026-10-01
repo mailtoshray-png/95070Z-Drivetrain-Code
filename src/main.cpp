@@ -103,7 +103,7 @@ bool buttonL1Held = false;
 bool buttonL2Held = false;
 bool buttonR1Held = false;
 bool buttonR2Held = false;
-bool buttonHeldOpen = false;
+bool buttonHeld = false;
 bool buttonXHeld = false;
 bool clawIsOpen = false;
 
@@ -146,26 +146,28 @@ void usercontrol(void) {
 
     // ========== INTAKE ========== //
     // Tap the R1 and R2 buttons to set the intake speed. Tap the same button again to stop //
-    if (Controller.ButtonR1.pressing() && intakeSpeed != 100 && !buttonR1Held) {
-      intakeMotor.spin(forward, 100, percent);
-      intakeSpeed = 100;
-      buttonR1Held = true;
-    } 
-    else if(Controller.ButtonR1.pressing() && intakeSpeed == 100 && !buttonR1Held) {
-      intakeMotor.stop(coast);
-      intakeSpeed = 0;
-      buttonR1Held = true;
-    }
-    else if (Controller.ButtonR2.pressing() && intakeSpeed != -100 && !buttonR2Held) {
-      intakeMotor.spin(reverse, 100, percent);
-      intakeSpeed = -100;
-      buttonR2Held = true;
-    } 
-    else if (Controller.ButtonR2.pressing() && intakeSpeed == -100 && !buttonR2Held){
-      intakeMotor.stop(coast);
-      intakeSpeed = 0;
-      buttonR2Held = true;
-    }
+
+    //commented out because it was cause problems with the claw code and we  cdon't need the intake code
+    // if (Controller.ButtonR1.pressing() && intakeSpeed != 100 && !buttonR1Held) {
+    //   intakeMotor.spin(forward, 100, percent);
+    //   intakeSpeed = 100;
+    //   buttonR1Held = true;
+    // } 
+    // else if(Controller.ButtonR1.pressing() && intakeSpeed == 100 && !buttonR1Held) {
+    //   intakeMotor.stop(coast);
+    //   intakeSpeed = 0;
+    //   buttonR1Held = true;
+    // }
+    // else if (Controller.ButtonR2.pressing() && intakeSpeed != -100 && !buttonR2Held) {
+    //   intakeMotor.spin(reverse, 100, percent);
+    //   intakeSpeed = -100;
+    //   buttonR2Held = true;
+    // } 
+    // else if (Controller.ButtonR2.pressing() && intakeSpeed == -100 && !buttonR2Held){
+    //   intakeMotor.stop(coast);
+    //   intakeSpeed = 0;
+    //   buttonR2Held = true;
+    // }
 
     if(!Controller.ButtonR1.pressing()) {
       buttonR1Held = false;
@@ -176,7 +178,8 @@ void usercontrol(void) {
 
     //========== CLAW CONTROL ==========//
     // Use L1 to control the claw to open and close. //
-    if (Controller.ButtonL1.pressing() && buttonHeldOpen == false) {
+    if (Controller.ButtonL1.pressing() && buttonHeld == false) {
+      // Toggle the claw state
       if(clawIsOpen) {
           intakeMotors.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
           clawIsOpen = false;
@@ -185,11 +188,11 @@ void usercontrol(void) {
           intakeMotors.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
           clawIsOpen = true;
       }
-      buttonHeldOpen = true; 
+      buttonHeld = true; 
     }
-
+    // prevent button holding by checking if the button is released
     else if (!Controller.ButtonL1.pressing()) {
-          buttonHeldOpen = false;
+          buttonHeld = false;
     }
 
     // ========== COLOR SENSOR ========== //

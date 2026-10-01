@@ -48,9 +48,9 @@ void drive::driveDistance(double distance, double tolerance, double kP, double k
 
         double driveTotal = drivePID.calculateTotal(error);
 
-        /*Brain.Screen.clearScreen();
-        Brain.Screen.setCursor(1, 1);
-        Brain.Screen.print(error);*/
+        Controller.Screen.clearScreen();
+        Controller.Screen.setCursor(1, 1);
+        Controller.Screen.print(error);
 
         driveL.spin(forward, driveTotal, percent);
         driveR.spin(forward, driveTotal, percent);
