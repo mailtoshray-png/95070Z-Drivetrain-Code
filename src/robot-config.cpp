@@ -16,12 +16,12 @@ using namespace vex;
 
 brain Brain;
 controller Controller(controllerType::primary);
-motor LB(PORT16, ratio18_1, true); //Left Back Motor(from brain perspective)
-motor LM(PORT18, ratio18_1, true); //Left Middle Motor(from brain perspective)
-motor LF(PORT19, ratio18_1, true); //Left Front Motor(from brain perspective)
-motor RB(PORT15, ratio18_1, false); //Right Back Motor(from brain perspective)
-motor RM(PORT14, ratio18_1, false); //Right Middle Motor(from brain perspective)
-motor RF(PORT13, ratio18_1, false); //Right Front Motor(from brain perspective)
+motor LB(PORT16, ratio18_1, false); //Left Back Motor(from brain perspective)
+motor LM(PORT18, ratio18_1, false); //Left Middle Motor(from brain perspective)
+motor LF(PORT19, ratio18_1, false); //Left Front Motor(from brain perspective)
+motor RB(PORT15, ratio18_1, true); //Right Back Motor(from brain perspective)
+motor RM(PORT14, ratio18_1, true); //Right Middle Motor(from brain perspective)
+motor RF(PORT13, ratio18_1, true); //Right Front Motor(from brain perspective)
 
 
 motor_group leftDrive(LF, LM, LB);
@@ -48,8 +48,8 @@ void vexcodeInit() {
   intakeMotor.setPosition(0, deg);
   InertialSensor.calibrate();
   DoubleActingPiston.set(false); //closed claw position
-  while (InertialSensor.isCalibrating()) {
-    task::sleep(100);
-  }
-  Controller.rumble("...");
+  // while (InertialSensor.isCalibrating()) {
+  //   task::sleep(100);
+  // }
+  // Controller.rumble("...");
 }
