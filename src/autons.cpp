@@ -14,13 +14,10 @@ void rightAuton() {
   Controller.Screen.print("start auton");
 
   drive Chassis(3.25, 5.0/3, 0, 0, 0, leftDrive, rightDrive, PORT1);
-  intake Intake(intakeMotors);
-  // Controller.Screen.setCursor(3, 1);
-  // Controller.Screen.print("Code started");
+  intake intake (intakeMotors);
+
   Chassis.driveDistance(24, 0.35, 6.05, 0.05, 0.2);
-  //   Controller.Screen.clearLine(3);
-  // Controller.Screen.setCursor(3, 1);
-  // Controller.Screen.print("Code ran");
+
 }
 
 void leftAuton() {

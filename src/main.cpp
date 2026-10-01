@@ -99,12 +99,13 @@ void spinRightDT(double power);
 
 //Variables used in driver control
 double intakeSpeed = 0;
-// bool buttonL1Held = false;
-// bool buttonL2Held = false;
+bool buttonL1Held = false;
+bool buttonL2Held = false;
 bool buttonR1Held = false;
 bool buttonR2Held = false;
-
+bool buttonHeldOpen = false;
 bool buttonXHeld = false;
+bool clawIsOpen = false;
 
 // User control function
 void usercontrol(void) {
@@ -171,6 +172,24 @@ void usercontrol(void) {
     }
     if(!Controller.ButtonR2.pressing()) {
       buttonR2Held = false;
+    }
+
+    //========== CLAW CONTROL ==========//
+    // Use L1 to control the claw to open and close. //
+    if (Controller.ButtonL1.pressing() && buttonHeldOpen == false) {
+      if(clawIsOpen) {
+          intakeMotors.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
+          clawIsOpen = false;
+      }
+      else {
+          intakeMotors.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
+          clawIsOpen = true;
+      }
+      buttonHeldOpen = true; 
+    }
+
+    else if (!Controller.ButtonL1.pressing()) {
+          buttonHeldOpen = false;
     }
 
     // ========== COLOR SENSOR ========== //

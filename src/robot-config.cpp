@@ -33,7 +33,7 @@ motor Lift2(PORT11, gearSetting::ratio36_1, false); //Right Lift motor(from brai
 digital_out DoubleActingPiston(Brain.ThreeWirePort.A);
 digital_out SingleActingPiston(Brain.ThreeWirePort.B);
 
-motor intakeMotor(PORT6, ratio18_1, false);
+motor intakeMotor(PORT6, ratio18_1, false); // claw motor
 // motor middleIntakeMotor(PORT9, ratio18_1, true);
 // motor  bottomIntakeMotor(PORT12, ratio18_1, false); 
 
