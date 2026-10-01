@@ -44,6 +44,7 @@ inertial InertialSensor(PORT7);
 optical OpticalSensor(PORT21);
 
 void vexcodeInit() {
+  intakeMotor.setPosition(0, deg);
   InertialSensor.calibrate();
   DoubleActingPiston.set(false); // retracted
   SingleActingPiston.set(false); // off

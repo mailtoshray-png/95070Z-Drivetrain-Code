@@ -169,26 +169,26 @@ void usercontrol(void) {
     //   buttonR2Held = true;
     // }
 
-    if(!Controller.ButtonR1.pressing()) {
-      buttonR1Held = false;
-    }
-    if(!Controller.ButtonR2.pressing()) {
-      buttonR2Held = false;
-    }
+    // if(!Controller.ButtonR1.pressing()) {
+    //   buttonR1Held = false;
+    // }
+    // if(!Controller.ButtonR2.pressing()) {
+    //   buttonR2Held = false;
+    // }
 
     //========== CLAW CONTROL ==========//
     // Use L1 to control the claw to open and close. //
     if (Controller.ButtonL1.pressing() && buttonHeld == false) {
       // Toggle the claw state
       if(clawIsOpen) {
-          intakeMotors.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
+          intakeMotor.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
           clawIsOpen = false;
       }
       else {
-          intakeMotors.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
+          intakeMotor.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
           clawIsOpen = true;
       }
-      buttonHeld = true; 
+      buttonHeld = true;
     }
     // prevent button holding by checking if the button is released
     else if (!Controller.ButtonL1.pressing()) {
