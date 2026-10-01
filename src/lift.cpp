@@ -12,10 +12,10 @@ void lift::liftArm(double deg, double speed) {
 }
 
 void lift::clamp() {
-    if (DoubleActingPiston.value() == 0) {
+    if (!DoubleActingPiston.value()) { // If the piston is not extended, extend it
         DoubleActingPiston.set(true);
     }
-    else if(DoubleActingPiston.value() == 1) {
+    else if(DoubleActingPiston.value()) { // If the piston is extended, retract it
         DoubleActingPiston.set(false);
     }
 }

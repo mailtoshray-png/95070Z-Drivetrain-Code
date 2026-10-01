@@ -34,7 +34,6 @@ extern vex::inertial InertialSensor;
 extern vex::optical OpticalSensor;
 
 extern vex::digital_out DoubleActingPiston;
-extern vex::digital_out SingleActingPiston;
 
 void vexcodeInit();
 

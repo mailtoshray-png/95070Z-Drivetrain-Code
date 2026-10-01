@@ -27,15 +27,16 @@ motor RF(PORT13, ratio18_1, false); //Right Front Motor(from brain perspective)
 motor_group leftDrive(LF, LM, LB);
 motor_group rightDrive(RF, RM, RB);
 
-motor Lift1(PORT10, gearSetting::ratio36_1, true); //Left Lift motor(from brain perspective)
-motor Lift2(PORT11, gearSetting::ratio36_1, false); //Right Lift motor(from brain perspective)
+motor Lift1(PORT10, gearSetting::ratio18_1, true); //Left Lift motor(from brain perspective)
+motor Lift2(PORT11, gearSetting::ratio18_1, false); //Right Lift motor(from brain perspective)
 
-digital_out DoubleActingPiston(Brain.ThreeWirePort.A);
-digital_out SingleActingPiston(Brain.ThreeWirePort.B);
+motor_group Lifts(Lift1, Lift2);
+
+digital_out DoubleActingPiston(Brain.ThreeWirePort.A); // claw piston
 
 motor intakeMotor(PORT6, ratio18_1, false); // claw motor
 // motor middleIntakeMotor(PORT9, ratio18_1, true);
-// motor  bottomIntakeMotor(PORT12, ratio18_1, false); 
+// motor  bottomIntakeMotor(PORT12, ratio18_1, false);
 
 motor_group intakeMotors(intakeMotor);
 
@@ -46,8 +47,7 @@ optical OpticalSensor(PORT21);
 void vexcodeInit() {
   intakeMotor.setPosition(0, deg);
   InertialSensor.calibrate();
-  DoubleActingPiston.set(false); // retracted
-  SingleActingPiston.set(false); // off
+  DoubleActingPiston.set(false); //closed claw position
   while (InertialSensor.isCalibrating()) {
     task::sleep(100);
   }

@@ -132,16 +132,14 @@ void usercontrol(void) {
     // ========== Lift CONTROL ========== //
     // Hold down the L1 and L2 buttons to use the lift //
     if (Controller.ButtonL1.pressing()) {
-      Lift1.spin(forward, 75, percent);
-      Lift2.spin(forward, 75, percent);
+      Lifts.spin(forward, 75, percent);
+
     }
     else if (Controller.ButtonL2.pressing()) {
-      Lift1.spin(reverse, 75, percent);
-      Lift2.spin(reverse, 75, percent);
+      Lifts.spin(reverse, 75, percent);
     } 
     else {
-      Lift1.stop(hold);
-      Lift2.stop(hold);
+      Lifts.stop(hold);
     }
 
     // ========== INTAKE ========== //
@@ -176,49 +174,73 @@ void usercontrol(void) {
     //   buttonR2Held = false;
     // }
 
-    //========== CLAW CONTROL ==========//
-    // Use L1 to control the claw to open and close. //
-    if (Controller.ButtonL1.pressing() && buttonHeld == false) {
+    //========== MOTOR CLAW CONTROL ==========//
+
+    //Commented out because we don't need the motor claw code, but might use it later if we want to switch back to a motor claw instead of a piston claw.//
+    
+    // Use R1 to control the claw to open and close. //
+    // if (Controller.ButtonR1.pressing() && buttonHeld == false) {
+    //   // Toggle the claw state
+    //   if(clawIsOpen) {
+    //       intakeMotor.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
+    //       clawIsOpen = false;
+    //   }
+    //   else {
+    //       intakeMotor.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
+    //       clawIsOpen = true;
+    //   }
+    //   buttonHeld = true;
+    // }
+    // // prevent button holding by checking if the button is released
+    // else if (!Controller.ButtonR1.pressing()) {
+    //       buttonHeld = false;
+    // }
+
+    //========== PISTON CLAW CONTROL ==========//
+    if (Controller.ButtonR1.pressing() && buttonHeld == false) {
       // Toggle the claw state
-      if(clawIsOpen) {
-          intakeMotor.spinToPosition(-20, deg, false); //closes claw(number depends on what's needed)
-          clawIsOpen = false;
+      if (clawIsOpen) { // If the claw is open, close it
+        DoubleActingPiston.set(false);
+        clawIsOpen = false;
       }
-      else {
-          intakeMotor.spinToPosition(-100, deg, false); //opens claw(number depends on what's needed)
-          clawIsOpen = true;
+      else if(!clawIsOpen) { // If the claw is closed, open it
+        DoubleActingPiston.set(true);
+        clawIsOpen = true;
       }
       buttonHeld = true;
     }
+    
     // prevent button holding by checking if the button is released
-    else if (!Controller.ButtonL1.pressing()) {
+    else if (!Controller.ButtonR1.pressing()) {
           buttonHeld = false;
     }
 
     // ========== COLOR SENSOR ========== //
-    color detectedColor = OpticalSensor.color();
+    // Commented out because we don't have a color sensor, but might use it later if we want to use the color sensor. //
+    // color detectedColor = OpticalSensor.color();
 
-    if (detectedColor == color::blue) {
-      Brain.Screen.printAt(50, 50, "Blue Detected!");
-    } 
+    // if (detectedColor == color::blue) {
+    //   Brain.Screen.printAt(50, 50, "Blue Detected!");
+    // } 
     
-    else if (detectedColor == color::red) {
-      Brain.Screen.printAt(50, 50, "Red Detected!");
-    } 
+    // else if (detectedColor == color::red) {
+    //   Brain.Screen.printAt(50, 50, "Red Detected!");
+    // } 
 
-    else {
-      Brain.Screen.printAt(50, 50, "No specific color detected.");
-    }
+    // else {
+    //   Brain.Screen.printAt(50, 50, "No specific color detected.");
+    // }
 
     // ========== PNEUMATICS ========== //
     // Use the X button to toggle the piston position //
-    if(Controller.ButtonX.pressing() && !buttonXHeld) {
-      DoubleActingPiston.set(!DoubleActingPiston.value());
-      buttonXHeld = true;
-    }
-    else if(!Controller.ButtonX.pressing()) {
-      buttonXHeld = false;
-    }
+    // Commented out because we don't need the piston code. //
+    // if(Controller.ButtonX.pressing() && !buttonXHeld) {
+    //   DoubleActingPiston.set(!DoubleActingPiston.value());
+    //   buttonXHeld = true;
+    // }
+    // else if(!Controller.ButtonX.pressing()) {
+    //   buttonXHeld = false;
+    // }
 
     // ========== LOOP DELAY ========== //
     wait(20, msec);
