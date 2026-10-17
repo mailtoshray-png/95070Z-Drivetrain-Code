@@ -28,11 +28,11 @@ motor_group leftDrive(LF, LM, LB);
 motor_group rightDrive(RF, RM, RB);
 
 motor Lift1(PORT10, gearSetting::ratio18_1, true); //Left Lift motor(from brain perspective)
-motor Lift2(PORT11, gearSetting::ratio18_1, false); //Right Lift motor(from brain perspective)
+motor Lift2(PORT1, gearSetting::ratio18_1, false); //Right Lift motor(from brain perspective)
 
 motor_group Lifts(Lift1, Lift2);
 
-digital_out DoubleActingPiston(Brain.ThreeWirePort.A); // claw piston
+digital_out DoubleActingPiston(Brain.ThreeWirePort.H); // claw piston
 
 motor intakeMotor(PORT6, ratio18_1, false); // claw motor
 // motor middleIntakeMotor(PORT9, ratio18_1, true);

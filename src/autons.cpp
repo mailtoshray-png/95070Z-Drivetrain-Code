@@ -22,7 +22,8 @@ void rightAuton() {
 
 void leftAuton() {
   
-  //Use functions to create an auton for the left side of the field 
+  //Use functions to create an auton for the left side of the field
+drive Chassis(3.25, 3.0/5, 0, 0, 0, leftDrive, rightDrive, PORT1);
 }
 
 void skillsAuton() {
