@@ -130,7 +130,7 @@ void usercontrol(void) {
   }
 
     // ========== Lift CONTROL ========== //
-    // Hold down the L1 and L2 buttons to use the lift //
+    // Hold down the L1 and L2 buttons to use the lift
     if (Controller.ButtonL1.pressing()) {
       Lift1.spin(forward, 75, percent);
       Lift2.spin(forward, 75, percent);
