@@ -113,6 +113,8 @@ void usercontrol(void) {
   while (true) {
 
     // ========== DRIVE CONTROL ========== //
+
+    // ===== ARCADE DRIVE =====//
   double verticalPower = Controller.Axis3.position();// Controls movement forwards-backwards.
   double horizontalPower = Controller.Axis1.position();// Controls movements turning left-right.
 
@@ -128,6 +130,24 @@ void usercontrol(void) {
     leftDrive.spin(forward, left, percent);
     rightDrive.spin(forward, right, percent);
   }
+
+  // ===== TANK DRIVE ===== //
+  double leftPower = Controller.Axis3.position(); //sets up a variable for the power that the left motors should have.
+    double rightPower = Controller.Axis2.position(); //sets up a variable for the power that the right motors should have.
+    //left side
+    if (fabs(leftPower) > 10) { //10 is for the dead zone
+      leftDrive.spin(forward, leftPower, pct);
+    }
+    else {
+      leftDrive.stop(coast);
+    }
+    //right side
+    if (fabs(rightPower) > 10) { //10 is for the dead zone
+      rightDrive.spin(forward, rightPower, pct);
+    }
+    else {
+      rightDrive.stop(coast);
+    }
 
     // ========== Lift CONTROL ========== //
     // Hold down the L1 and L2 buttons to use the lift //
