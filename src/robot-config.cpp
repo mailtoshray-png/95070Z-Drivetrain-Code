@@ -31,7 +31,7 @@ motor Lift2(PORT8, gearSetting::ratio18_1, true); //Right Lift motor
 
 motor_group Lifts(Lift1, Lift2);
 
-digital_out DoubleActingPiston(Brain.ThreeWirePort.H); // claw piston
+digital_out DoubleActingPiston(Brain.ThreeWirePort.A); // claw piston
 
 motor intakeMotor(PORT6, ratio18_1, false); // claw motor
 // motor middleIntakeMotor(PORT9, ratio18_1, true);

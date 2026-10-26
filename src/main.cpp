@@ -199,28 +199,18 @@ void usercontrol(void) {
     // }
 
     //========== PISTON CLAW CONTROL ==========//
-    if (Controller.ButtonR1.pressing() && buttonHeld == false) {
-      // Toggle the claw state
-      Controller.Screen.clearScreen();
-      Controller.Screen.print("Toggling Claw");
-      if (clawIsOpen) { // If the claw is open, close it
-        DoubleActingPiston.set(false);
-        clawIsOpen = false;
-        Controller.Screen.clearScreen();
-        Controller.Screen.print("Claw Closed");
-      }
-      else if(!clawIsOpen) { // If the claw is closed, open it
-        DoubleActingPiston.set(true);
-        clawIsOpen = true;
-        Controller.Screen.clearScreen();
-        Controller.Screen.print("Claw Opened");
-      }
+    if (Controller.ButtonR1.pressing() && !buttonHeld) {
+      DoubleActingPiston.set(!DoubleActingPiston.value()); // Toggle the piston state
+      clawIsOpen = true;
       buttonHeld = true;
+      Controller.Screen.clearLine(3);
+      Controller.Screen.setCursor(3, 1);
+      Controller.Screen.print("Claw is now %s", DoubleActingPiston.value() ? "open" : "closed");
     }
-    
     // prevent button holding by checking if the button is released
     else if (!Controller.ButtonR1.pressing()) {
           buttonHeld = false;
+          wait(200, msec); // Add a small delay to prevent rapid toggling
     }
 
     // ========== COLOR SENSOR ========== //
@@ -258,16 +248,28 @@ void usercontrol(void) {
 // Entry point
 int main() {
 
-  Competition.autonomous(autonomous);
-  Competition.drivercontrol(usercontrol);
+  // Competition.autonomous(autonomous);
+  // Competition.drivercontrol(usercontrol);
 
   
-  pre_auton();
-  Competition.test_auton();
-  Competition.test_driver();
+  // pre_auton();
+  // Competition.test_auton();
+  // Competition.test_driver();
 
 
   while (true) {
-    wait(100, msec);
+    if (Controller.ButtonR1.pressing() && !buttonHeld) {
+      DoubleActingPiston.set(!DoubleActingPiston.value()); // Toggle the piston state
+      clawIsOpen = true;
+      buttonHeld = true;
+      Controller.Screen.clearLine(3);
+      Controller.Screen.setCursor(3, 1);
+      Controller.Screen.print("Claw is now %s", DoubleActingPiston.value() ? "open" : "closed");
+    }
+    // prevent button holding by checking if the button is released
+    else if (!Controller.ButtonR1.pressing()) {
+      buttonHeld = false;
+      wait(200, msec); // Add a small delay to prevent rapid toggling
+    }
   }
 }
