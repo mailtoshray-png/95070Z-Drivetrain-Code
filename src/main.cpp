@@ -117,8 +117,8 @@ void usercontrol(void) {
   double horizontalPower = Controller.Axis1.position();// Controls movements turning left-right.
 
   // 0.8 is to slow down the drivetrain.
-  double right = ((verticalPower) - (horizontalPower)) * 0.8;
-  double left = ((verticalPower) + (horizontalPower)) * 0.8;
+  double right = ((verticalPower) + (horizontalPower)) * 0.8;
+  double left = ((verticalPower) - (horizontalPower)) * 0.8;
 
   if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { //10 is for the dead zone
     leftDrive.stop(coast);
@@ -136,8 +136,8 @@ void usercontrol(void) {
       Lift2.spin(forward, 80, percent);
     }
     else if (Controller.ButtonL2.pressing()) {
-      Lift1.spin(reverse, 80, percent);
-      Lift2.spin(reverse, 80, percent);
+      Lift1.spin(reverse, 60, percent);
+      Lift2.spin(reverse, 60, percent);
     } 
     else {
       Lift1.stop(hold);
@@ -201,13 +201,19 @@ void usercontrol(void) {
     //========== PISTON CLAW CONTROL ==========//
     if (Controller.ButtonR1.pressing() && buttonHeld == false) {
       // Toggle the claw state
+      Controller.Screen.clearScreen();
+      Controller.Screen.print("Toggling Claw");
       if (clawIsOpen) { // If the claw is open, close it
         DoubleActingPiston.set(false);
         clawIsOpen = false;
+        Controller.Screen.clearScreen();
+        Controller.Screen.print("Claw Closed");
       }
       else if(!clawIsOpen) { // If the claw is closed, open it
         DoubleActingPiston.set(true);
         clawIsOpen = true;
+        Controller.Screen.clearScreen();
+        Controller.Screen.print("Claw Opened");
       }
       buttonHeld = true;
     }
