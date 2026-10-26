@@ -23,12 +23,11 @@ motor RB(PORT13, ratio18_1, true); //Right Back Motor
 motor RM(PORT12, ratio18_1, true); //Right Middle Motor
 motor RF(PORT3, ratio18_1, true); //Right Front Motor
 
-
 motor_group leftDrive(LF, LM, LB);
 motor_group rightDrive(RF, RM, RB);
 
-motor Lift1(PORT1, gearSetting::ratio36_1, false); //Left Lift motor
-motor Lift2(PORT8, gearSetting::ratio36_1, true); //Right Lift motor
+motor Lift1(PORT1, gearSetting::ratio18_1, false); //Left Lift motor
+motor Lift2(PORT8, gearSetting::ratio18_1, true); //Right Lift motor
 
 motor_group Lifts(Lift1, Lift2);
 
@@ -51,5 +50,5 @@ void vexcodeInit() {
   // while (InertialSensor.isCalibrating()) {
   //   task::sleep(100);
   // }
-  // Controller.rumble("...");
+  // Controller.rumble("..."); 
 }
