@@ -46,7 +46,7 @@ optical OpticalSensor(PORT21);
 void vexcodeInit() {
   intakeMotor.setPosition(0, deg);
   InertialSensor.calibrate();
-  DoubleActingPiston.set(false); //closed claw position
+  DoubleActingPiston.set(true); //open claw position
   // while (InertialSensor.isCalibrating()) {
   //   task::sleep(100);
   // }

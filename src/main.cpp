@@ -105,7 +105,6 @@ bool buttonR1Held = false;
 bool buttonR2Held = false;
 bool buttonHeld = false;
 bool buttonXHeld = false;
-bool clawIsOpen = false;
 
 // User control function
 void usercontrol(void) {
@@ -116,9 +115,9 @@ void usercontrol(void) {
   double verticalPower = Controller.Axis3.position();// Controls movement forwards-backwards.
   double horizontalPower = Controller.Axis1.position();// Controls movements turning left-right.
 
-  // 0.8 is to slow down the drivetrain.
-  double right = ((verticalPower) + (horizontalPower)) * 0.8;
-  double left = ((verticalPower) - (horizontalPower)) * 0.8;
+  // 0.7 is to slow down the drivetrain.
+  double right = ((verticalPower) + (horizontalPower)) * 0.7;
+  double left = ((verticalPower) - (horizontalPower)) * 0.7;
 
   if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { //10 is for the dead zone
     leftDrive.stop(coast);
@@ -199,18 +198,11 @@ void usercontrol(void) {
     // }
 
     //========== PISTON CLAW CONTROL ==========//
-    if (Controller.ButtonR1.pressing() && !buttonHeld) {
-      DoubleActingPiston.set(!DoubleActingPiston.value()); // Toggle the piston state
-      clawIsOpen = true;
-      buttonHeld = true;
+    if (Controller.ButtonR1.PRESSED) {
       Controller.Screen.clearLine(3);
       Controller.Screen.setCursor(3, 1);
-      Controller.Screen.print("Claw is now %s", DoubleActingPiston.value() ? "open" : "closed");
-    }
-    // prevent button holding by checking if the button is released
-    else if (!Controller.ButtonR1.pressing()) {
-          buttonHeld = false;
-          wait(200, msec); // Add a small delay to prevent rapid toggling
+      Controller.Screen.print(DoubleActingPiston.value());
+      DoubleActingPiston.set(!DoubleActingPiston.value());
     }
 
     // ========== COLOR SENSOR ========== //
@@ -248,28 +240,16 @@ void usercontrol(void) {
 // Entry point
 int main() {
 
-  // Competition.autonomous(autonomous);
-  // Competition.drivercontrol(usercontrol);
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(usercontrol);
 
   
-  // pre_auton();
-  // Competition.test_auton();
-  // Competition.test_driver();
+  pre_auton();
+  Competition.test_auton();
+  Competition.test_driver();
 
 
   while (true) {
-    if (Controller.ButtonR1.pressing() && !buttonHeld) {
-      DoubleActingPiston.set(!DoubleActingPiston.value()); // Toggle the piston state
-      clawIsOpen = true;
-      buttonHeld = true;
-      Controller.Screen.clearLine(3);
-      Controller.Screen.setCursor(3, 1);
-      Controller.Screen.print("Claw is now %s", DoubleActingPiston.value() ? "open" : "closed");
-    }
-    // prevent button holding by checking if the button is released
-    else if (!Controller.ButtonR1.pressing()) {
-      buttonHeld = false;
-      wait(200, msec); // Add a small delay to prevent rapid toggling
-    }
+    wait(100, msec);
   }
 }
