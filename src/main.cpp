@@ -7,7 +7,6 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-
 #include "vex.h"
 #include "robot-config.h"
 #include "PID.h"
@@ -23,7 +22,6 @@ using namespace vex;
 // A global instance of competition
 competition Competition;
 
-
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
 /*                                                                           */
@@ -34,7 +32,8 @@ competition Competition;
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
 
-void pre_auton(void) {
+void pre_auton(void)
+{
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -54,28 +53,28 @@ void pre_auton(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void autonomous(void) {
-  
-  switch (autonSelector::getSelectedAuton()) {
+void autonomous(void)
+{
 
-    case 1:
-      rightAuton();
-      break;
+  switch (autonSelector::getSelectedAuton())
+  {
 
-    case 2:
-      leftAuton();
-      break;
+  case 1:
+    rightAuton();
+    break;
 
-    case 3:
-      skillsAuton();
-      break;
+  case 2:
+    leftAuton();
+    break;
 
-    default:
-      Brain.Screen.print("No valid auton selected!");
-      break;
+  case 3:
+    skillsAuton();
+    break;
+
+  default:
+    Brain.Screen.print("No valid auton selected!");
+    break;
   }
-
-
 }
 
 /*---------------------------------------------------------------------------*/
@@ -96,8 +95,7 @@ bool inauton = false;
 void spinLeftDT(double power);
 void spinRightDT(double power);
 
-
-//Variables used in driver control
+// Variables used in driver control
 double intakeSpeed = 0;
 bool buttonL1Held = false;
 bool buttonL2Held = false;
@@ -107,38 +105,45 @@ bool buttonHeld = false;
 bool buttonXHeld = false;
 
 // User control function
-void usercontrol(void) {
+void usercontrol(void)
+{
 
-  while (true) {
+  while (true)
+  {
 
     // ========== DRIVE CONTROL ========== //
-  double verticalPower = Controller.Axis3.position();// Controls movement forwards-backwards.
-  double horizontalPower = Controller.Axis1.position();// Controls movements turning left-right.
+    double verticalPower = Controller.Axis3.position();   // Controls movement forwards-backwards.
+    double horizontalPower = Controller.Axis1.position(); // Controls movements turning left-right.
 
-  // 0.7 is to slow down the drivetrain.
-  double right = ((verticalPower) + (horizontalPower)) * 0.7;
-  double left = ((verticalPower) - (horizontalPower)) * 0.7;
+    // 0.7 is to slow down the drivetrain.
+    double right = ((verticalPower * 0.7) + (horizontalPower * 0.6));
+    double left = ((verticalPower * 0.7) - (horizontalPower * 0.6));
 
-  if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { //10 is for the dead zone
-    leftDrive.stop(coast);
-    rightDrive.stop(coast);
-  }
-  else {
-    leftDrive.spin(forward, left, percent);
-    rightDrive.spin(forward, right, percent);
-  }
+    if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10)
+    { // 10 is for the dead zone
+      leftDrive.stop(coast);
+      rightDrive.stop(coast);
+    }
+    else
+    {
+      leftDrive.spin(forward, left, percent);
+      rightDrive.spin(forward, right, percent);
+    }
 
     // ========== Lift CONTROL ========== //
     // Hold down the L1 and L2 buttons to use the lift //
-    if (Controller.ButtonL1.pressing()) {
+    if (Controller.ButtonL1.pressing())
+    {
       Lift1.spin(forward, 80, percent);
       Lift2.spin(forward, 80, percent);
     }
-    else if (Controller.ButtonL2.pressing()) {
+    else if (Controller.ButtonL2.pressing())
+    {
       Lift1.spin(reverse, 60, percent);
       Lift2.spin(reverse, 60, percent);
-    } 
-    else {
+    }
+    else
+    {
       Lift1.stop(hold);
       Lift2.stop(hold);
     }
@@ -146,27 +151,27 @@ void usercontrol(void) {
     // ========== INTAKE ========== //
     // Tap the R1 and R2 buttons to set the intake speed. Tap the same button again to stop //
 
-    //commented out because it was cause problems with the claw code and we  cdon't need the intake code
-    // if (Controller.ButtonR1.pressing() && intakeSpeed != 100 && !buttonR1Held) {
-    //   intakeMotor.spin(forward, 100, percent);
-    //   intakeSpeed = 100;
-    //   buttonR1Held = true;
-    // } 
-    // else if(Controller.ButtonR1.pressing() && intakeSpeed == 100 && !buttonR1Held) {
-    //   intakeMotor.stop(coast);
-    //   intakeSpeed = 0;
-    //   buttonR1Held = true;
-    // }
-    // else if (Controller.ButtonR2.pressing() && intakeSpeed != -100 && !buttonR2Held) {
-    //   intakeMotor.spin(reverse, 100, percent);
-    //   intakeSpeed = -100;
-    //   buttonR2Held = true;
-    // } 
-    // else if (Controller.ButtonR2.pressing() && intakeSpeed == -100 && !buttonR2Held){
-    //   intakeMotor.stop(coast);
-    //   intakeSpeed = 0;
-    //   buttonR2Held = true;
-    // }
+    // commented out because it was cause problems with the claw code and we  cdon't need the intake code
+    //  if (Controller.ButtonR1.pressing() && intakeSpeed != 100 && !buttonR1Held) {
+    //    intakeMotor.spin(forward, 100, percent);
+    //    intakeSpeed = 100;
+    //    buttonR1Held = true;
+    //  }
+    //  else if(Controller.ButtonR1.pressing() && intakeSpeed == 100 && !buttonR1Held) {
+    //    intakeMotor.stop(coast);
+    //    intakeSpeed = 0;
+    //    buttonR1Held = true;
+    //  }
+    //  else if (Controller.ButtonR2.pressing() && intakeSpeed != -100 && !buttonR2Held) {
+    //    intakeMotor.spin(reverse, 100, percent);
+    //    intakeSpeed = -100;
+    //    buttonR2Held = true;
+    //  }
+    //  else if (Controller.ButtonR2.pressing() && intakeSpeed == -100 && !buttonR2Held){
+    //    intakeMotor.stop(coast);
+    //    intakeSpeed = 0;
+    //    buttonR2Held = true;
+    //  }
 
     // if(!Controller.ButtonR1.pressing()) {
     //   buttonR1Held = false;
@@ -177,8 +182,8 @@ void usercontrol(void) {
 
     //========== MOTOR CLAW CONTROL ==========//
 
-    //Commented out because we don't need the motor claw code, but might use it later if we want to switch back to a motor claw instead of a piston claw.//
-    
+    // Commented out because we don't need the motor claw code, but might use it later if we want to switch back to a motor claw instead of a piston claw.//
+
     // Use R1 to control the claw to open and close. //
     // if (Controller.ButtonR1.pressing() && buttonHeld == false) {
     //   // Toggle the claw state
@@ -198,7 +203,8 @@ void usercontrol(void) {
     // }
 
     //========== PISTON CLAW CONTROL ==========//
-    if (Controller.ButtonR1.PRESSED) {
+    if (Controller.ButtonR1.PRESSED)
+    {
       Controller.Screen.clearLine(3);
       Controller.Screen.setCursor(3, 1);
       Controller.Screen.print(DoubleActingPiston.value());
@@ -211,11 +217,11 @@ void usercontrol(void) {
 
     // if (detectedColor == color::blue) {
     //   Brain.Screen.printAt(50, 50, "Blue Detected!");
-    // } 
-    
+    // }
+
     // else if (detectedColor == color::red) {
     //   Brain.Screen.printAt(50, 50, "Red Detected!");
-    // } 
+    // }
 
     // else {
     //   Brain.Screen.printAt(50, 50, "No specific color detected.");
@@ -238,18 +244,18 @@ void usercontrol(void) {
 }
 
 // Entry point
-int main() {
+int main()
+{
 
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
 
-  
   pre_auton();
   Competition.test_auton();
   Competition.test_driver();
 
-
-  while (true) {
+  while (true)
+  {
     wait(100, msec);
   }
 }
