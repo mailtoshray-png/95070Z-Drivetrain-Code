@@ -17,8 +17,11 @@ void rightAuton() {
   drive Chassis(3.25, 3.0/5, 0, 0, 0, leftDrive, rightDrive, PORT1);
   intake intake (intakeMotors);
 
-  Chassis.driveDistance(24, 0.3, 2.5, 0, 0);
-  std::cout<<"drive pid done"<<std::endl;
+  //Chassis.driveDistance(24, 0.3, 2.5, 0, 0);
+  //std::cout<<"drive pid done"<<std::endl;
+
+  Chassis.turnAngle(90, 2, 0.5, 0, 0);
+  std::cout<<"turn pid done"<<std::endl;  
 }
 
 void leftAuton() {
