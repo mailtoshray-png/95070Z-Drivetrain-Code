@@ -32,8 +32,7 @@ competition Competition;
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
 
-void pre_auton(void)
-{
+void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
@@ -53,8 +52,7 @@ void pre_auton(void)
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-void autonomous(void)
-{
+void autonomous(void) {
 
   switch (autonSelector::getSelectedAuton())
   {
@@ -105,11 +103,9 @@ bool buttonHeld = false;
 bool buttonXHeld = false;
 
 // User control function
-void usercontrol(void)
-{
+void usercontrol(void) {
 
-  while (true)
-  {
+  while (true) {
 
     // ========== DRIVE CONTROL ========== //
     double verticalPower = Controller.Axis3.position();   // Controls movement forwards-backwards.
@@ -119,31 +115,26 @@ void usercontrol(void)
     double right = ((verticalPower * 0.7) + (horizontalPower * 0.6));
     double left = ((verticalPower * 0.7) - (horizontalPower * 0.6));
 
-    if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10)
-    { // 10 is for the dead zone
+    if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { // 10 is for the dead zone
       leftDrive.stop(coast);
       rightDrive.stop(coast);
     }
-    else
-    {
+    else {
       leftDrive.spin(forward, left, percent);
       rightDrive.spin(forward, right, percent);
     }
 
     // ========== Lift CONTROL ========== //
     // Hold down the L1 and L2 buttons to use the lift //
-    if (Controller.ButtonL1.pressing())
-    {
+    if (Controller.ButtonL1.pressing()){
       Lift1.spin(forward, 80, percent);
       Lift2.spin(forward, 80, percent);
     }
-    else if (Controller.ButtonL2.pressing())
-    {
-      Lift1.spin(reverse, 60, percent);
-      Lift2.spin(reverse, 60, percent);
+    else if (Controller.ButtonL2.pressing()) {
+      Lift1.spin(reverse, 80, percent);
+      Lift2.spin(reverse, 80, percent);
     }
-    else
-    {
+    else {
       Lift1.stop(hold);
       Lift2.stop(hold);
     }

@@ -27,7 +27,7 @@ motor_group leftDrive(LF, LM, LB);
 motor_group rightDrive(RF, RM, RB);
 
 motor Lift1(PORT1, gearSetting::ratio18_1, true); //Left Lift motor
-motor Lift2(PORT8, gearSetting::ratio18_1, false); //Right Lift motor
+motor Lift2(PORT8, gearSetting::ratio18_1, true); //Right Lift motor
 
 motor_group Lifts(Lift1, Lift2);
 
