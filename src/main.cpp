@@ -112,8 +112,8 @@ void usercontrol(void) {
     double horizontalPower = Controller.Axis1.position(); // Controls movements turning left-right.
 
     // 0.7 is to slow down the drivetrain.
-    double right = ((verticalPower * 0.7) + (horizontalPower * 0.6));
-    double left = ((verticalPower * 0.7) - (horizontalPower * 0.6));
+    double right = -((verticalPower * 0.7) + (horizontalPower * 0.6));
+    double left = -((verticalPower * 0.7) - (horizontalPower * 0.6));
 
     if (fabs(verticalPower) < 10 && fabs(horizontalPower) < 10) { // 10 is for the dead zone
       leftDrive.stop(coast);

@@ -14,12 +14,15 @@ void rightAuton() {
   Controller.Screen.setCursor(3, 1);
   Controller.Screen.print("start auton");
 
-  drive Chassis(3.25, 3.0/5, 0, 0, 300, leftDrive, rightDrive, PORT1);
+  drive Chassis(3.25, 3.0/5, 0, 0, 0/*300*/, leftDrive, rightDrive, PORT7);
   intake intake (intakeMotors);
 
   //Chassis.driveDistance(24, 0.3, 2.5, 0, 0);
-
-  // Chassis.turnAngle(90, 2, 0.5, 0, 0);
+  /*while(true) {
+    std::cout<<InertialSensor.heading()<<std::endl;
+    wait(10, msec);
+  }*/
+  Chassis.turnAngle(90, 1, 0.7, 0, 0.05);
 
   /*Chassis.driveDistance(-3);
   Chassis.turnAngle(60);

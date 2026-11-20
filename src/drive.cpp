@@ -3,6 +3,7 @@
 #include "functions.h"
 #include "drive.h"
 #include "PID.h"
+#include <iostream>
 
 using namespace vex;
 
@@ -95,6 +96,7 @@ void drive::turnAngle(double angle, double tolerance, double kP, double kI, doub
         driveL.spin(forward, turnTotal, percent);
         driveR.spin(reverse, turnTotal, percent);
         wait(turnPID.getUpdateTime(), msec);
+        std::cout<<error<<std::endl;
     }
 
     driveStop();
